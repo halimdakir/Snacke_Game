@@ -1,0 +1,8 @@
+# Assemble the assembly file to get start.o
+as -o start.o start.asm
+
+# Compile helpers.c without PIE to get helpers.o
+gcc -c helpers.c -o helpers.o -fno-pie
+
+# Link the object files together without PIE
+gcc -nostartfiles -no-pie start.o helpers.o -o snake -lncurses

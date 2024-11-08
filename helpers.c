@@ -41,14 +41,19 @@ void board_put_str(int x, int y, const char *str) {
 }
 
 void board_init(void) {
-  srand(time(0));          /* Init randomiser */
-  p_screen = initscr();    /* Create the window */
-  start_color();           /* We use color (well...) */
-  curs_set(0);             /* Make cursor invisible */
-  noecho();                /* Don't output chars on screen when written */
-  keypad(p_screen, TRUE);  /* Give p_screen keyboard focus */
-  nodelay(p_screen, TRUE); /* Make getch nonblocking */
+  printf("----");
+  printw("---Board initialized! Press any key to continue..."); // Debug statement
+  srand(time(0));          
+  p_screen = initscr();    
+  start_color();           
+  curs_set(0);             
+  noecho();                
+  keypad(p_screen, TRUE);  
+  nodelay(p_screen, TRUE); 
+  printw("Board initialized! Press any key to continue..."); // Debug statement
+  refresh(); // Ensure text is shown on the screen
 }
+
 
 void game_exit(void) {
   delwin(p_screen);

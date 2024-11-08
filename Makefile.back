@@ -4,7 +4,7 @@
 #
 # Author: Christoffer Åleskog
 
-all: snake_asm start_asm_start
+all: snake_asm snake_asm_start
 
 # Rule for compiling C source
 .c.o:
