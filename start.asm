@@ -1,21 +1,17 @@
-section .text
-global _start
+.section .text
+.globl _start
 
 _start:
-    call init_board   ; Initialize the game board with ncurses
+    call board_init        # Initialize the board
 
-    ; Example to draw a point at position (10, 10)
-    mov edi, 10       ; x position
-    mov esi, 10       ; y position
-    mov edx, '*'      ; symbol to draw
-    call draw_point   ; Draw the point
+    # Draw an initial snake position at (10, 10)
+    movl $10, %edi         # Y position
+    movl $10, %esi         # X position
+    movl $42, %edx         # Character to draw ('*' is 42 in ASCII)
+    call draw_point        # Draw the character
 
-    ; Wait for a key press to exit
-    xor eax, eax
-    call getch
-    call endwin       ; End ncurses mode
+    # Add a loop or wait to see the result
+    jmp .                  # Infinite loop to keep display open
 
-    ; Exit the program
-    mov eax, 60       ; syscall number for exit
-    xor edi, edi      ; exit status 0
-    syscall           ; call the kernel
+    # Cleanup (this will not execute due to the infinite loop above)
+    call endwin            # Properly end ncurses mode
