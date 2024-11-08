@@ -1,33 +1,21 @@
-.extern board_init
-.extern start_game
-.extern printf
+section .text
+global _start
 
-.section .data
-    default_snake_length: .long 5       # Default initial length of the snake
-    default_apple_count:  .long 2       # Default number of apples on the screen
-    message: .asciz "Hello world!\n"
-
-.section .text
-.global _start                          # Define _start as global so it's recognized as the entry point
-
-
-# _start:
-# Entry point of the program. Initializes parameters and calls start_game.
 _start:
-    mov $1, %rax            # Syscall number for write
-    mov $1, %rdi            # File descriptor 1 is stdout
-    mov $message, %rsi      # Address of string
-    mov $14, %rdx           # Length of string (14 bytes)
-    syscall                 # Invoke the syscall
+    call init_board   ; Initialize the game board with ncurses
 
-    call board_init
-    # Set up parameters for start_game (snake length and apple count)
-    # movl default_snake_length, %edi     # Move snake length into %edi (1st argument in x86-64)
-    # movl default_apple_count, %esi      # Move apple count into %esi (2nd argument in x86-64)
+    ; Example to draw a point at position (10, 10)
+    mov edi, 10       ; x position
+    mov esi, 10       ; y position
+    mov edx, '*'      ; symbol to draw
+    call draw_point   ; Draw the point
 
-    call start_game                     # Call start_game with the initial parameters
+    ; Wait for a key press to exit
+    xor eax, eax
+    call getch
+    call endwin       ; End ncurses mode
 
-    # Exit the program (return from _start)
-    mov $60, %rax                       # syscall number for exit
-    xor %rdi, %rdi                      # exit code 0
-    syscall                             # make the system call to exit
+    ; Exit the program
+    mov eax, 60       ; syscall number for exit
+    xor edi, edi      ; exit status 0
+    syscall           ; call the kernel
