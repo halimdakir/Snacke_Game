@@ -2,16 +2,22 @@
 .globl _start
 
 _start:
-    call board_init        # Initialize the board
+    call board_init    # Call the board initialization function
 
-    # Draw an initial snake position at (10, 10)
-    movl $10, %edi         # Y position
-    movl $10, %esi         # X position
-    movl $42, %edx         # Character to draw ('*' is 42 in ASCII)
-    call draw_point        # Draw the character
+    # Prepare to print '*' at position (10, 5)
+    movl $10, %edi     # Set X position
+    movl $5, %esi      # Set Y position
+    movl $42, %edx     # ASCII code for '*' (Note: '%' not needed for constants)
+    call board_put_char  # Call the function to put a char on the board
 
-    # Add a loop or wait to see the result
-    jmp .                  # Infinite loop to keep display open
+    # Infinite loop to keep the display open
+    .loop_here:
+    jmp .loop_here     # Jump to itself, creating an infinite loop
 
-    # Cleanup (this will not execute due to the infinite loop above)
-    call endwin            # Properly end ncurses mode
+    # This section would not be reached due to the loop, but typically here:
+    # call endwin       # Would clean up the ncurses environment if used
+
+    # Exit the program properly
+    movl $60, %eax     # Syscall number for exit
+    xorl %edi, %edi    # Exit status 0
+    syscall            # System call to exit
