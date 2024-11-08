@@ -41,8 +41,6 @@ void board_put_str(int x, int y, const char *str) {
 }
 
 void board_init(void) {
-  printf("----");
-  printw("---Board initialized! Press any key to continue..."); // Debug statement
   srand(time(0));          
   p_screen = initscr();    
   start_color();           
@@ -53,6 +51,12 @@ void board_init(void) {
   printw("Board initialized! Press any key to continue..."); // Debug statement
   refresh(); // Ensure text is shown on the screen
 }
+
+void draw_point(int x, int y, char symbol) {
+    mvaddch(y, x, symbol);  // Move cursor and draw character
+    refresh();              // Make the change visible
+}
+
 
 
 void game_exit(void) {
